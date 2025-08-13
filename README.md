@@ -59,3 +59,15 @@ max by (namespace, job_name, mks_cluster) (
     )
   )
 )
+---
+min by (namespace, job_name, mks_cluster) (
+  (
+    max without (endpoint, instance, job, service, prometheus, prometheus_replica, container, pod) (
+      kube_job_status_start_time{mks_cluster="$cluster"} * 1000
+    )
+  * on (namespace, job_name, mks_cluster) group_left()
+    max without (endpoint, instance, job, service, prometheus, prometheus_replica, container, pod) (
+      kube_job_failed{condition="true", mks_cluster="$cluster"} == 1
+    )
+  )
+)
