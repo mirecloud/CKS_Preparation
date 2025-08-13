@@ -91,4 +91,13 @@ max by (namespace, job_name, mks_cluster) (
       kube_job_status_failed{mks_cluster="$cluster"} > 0
   )
 )
+---
+
+(
+  kube_job_status_active{mks_cluster=~"$cluster"} > 0
+  and (kube_job_spec_completions{mks_cluster=~"$cluster"} - kube_job_status_succeeded{mks_cluster=~"$cluster"}) > 0
+  and (time() - kube_job_status_start_time{mks_cluster=~"$cluster"}) > 3600
+)
+* on (job_name, namespace, mks_cluster) group_left()
+((time() - kube_job_status_start_time{mks_cluster=~"$cluster"}) / 3600)
 
