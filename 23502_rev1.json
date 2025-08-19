@@ -1,0 +1,3514 @@
+{
+  "__elements": {},
+  "__inputs": [
+    {
+      "description": "",
+      "label": "Prometheus",
+      "name": "DS_PROMETHEUS",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus",
+      "type": "datasource"
+    }
+  ],
+  "__requires": [
+    {
+      "id": "grafana",
+      "name": "Grafana",
+      "type": "grafana",
+      "version": "11.4.0"
+    },
+    {
+      "id": "prometheus",
+      "name": "Prometheus",
+      "type": "datasource",
+      "version": "1.0.0"
+    },
+    {
+      "id": "stat",
+      "name": "Stat",
+      "type": "panel",
+      "version": ""
+    },
+    {
+      "id": "timeseries",
+      "name": "Time series",
+      "type": "panel",
+      "version": ""
+    }
+  ],
+  "description": "Dashboard showing Istio Envoy Clusters metrics within Istio service mesh",
+  "graphTooltip": 1,
+  "id": null,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "panels": [],
+      "title": "Server Stats",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "interval": "1m",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by(pod) (envoy_server_uptime{namespace=~\"$Namespace\",pod=~\"$pod\"})\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "text": "FAIL"
+                },
+                "1": {
+                  "color": "green",
+                  "text": "OK"
+                }
+              },
+              "type": "value"
+            }
+          ]
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "id": 3,
+      "interval": "1m",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by(pod) (envoy_server_live{namespace=~\"$Namespace\",pod=~\"$pod\"})\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Server Live",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 0,
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 4,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by(pod) (envoy_server_concurrency{namespace=~\"$Namespace\",pod=~\"$pod\"})\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Worker Threads",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never"
+          },
+          "unit": "bytes"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 9
+      },
+      "id": 5,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by(pod) (envoy_server_memory_allocated{namespace=~\"$Namespace\",pod=~\"$pod\"})\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Memory Allocated",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never"
+          },
+          "unit": "bytes"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 9
+      },
+      "id": 6,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by(pod) (envoy_server_memory_heap_size{namespace=~\"$Namespace\",pod=~\"$pod\"})\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Memory Heap Size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never"
+          },
+          "unit": "bytes"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 7,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by(pod) (envoy_server_memory_physical_size{namespace=~\"$Namespace\",pod=~\"$pod\"})\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Memory Physical Size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 0,
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 17
+      },
+      "id": 8,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by(pod) (envoy_server_total_connections{namespace=~\"$Namespace\",pod=~\"$pod\"})\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total Connections",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 9,
+      "panels": [],
+      "title": "Cluster manager",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 0,
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 26
+      },
+      "id": 10,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod, $clusterNameLabel) (\n    envoy_cluster_manager_active_clusters{\n        namespace=~\"$Namespace\",pod=~\"$pod\"\n    }\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+        }
+      ],
+      "title": "Active clusters",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 0,
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 26
+      },
+      "id": 11,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    envoy_cluster_manager_warming_clusters{\n        namespace=~\"$Namespace\",pod=~\"$pod\"\n    }\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Warming clusters",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 2,
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 26
+      },
+      "id": 12,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    rate(\n        envoy_cluster_manager_cluster_added{\n            namespace=~\"$Namespace\",pod=~\"$pod\"\n        }\n    [$__rate_interval])\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total clusters added",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 2,
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 34
+      },
+      "id": 13,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    rate(\n        envoy_cluster_manager_cluster_modified{\n            namespace=~\"$Namespace\",pod=~\"$pod\"\n        }\n    [$__rate_interval])\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total clusters modified",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 2,
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 34
+      },
+      "id": 14,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    rate(\n        envoy_cluster_manager_cluster_removed{\n            namespace=~\"$Namespace\",pod=~\"$pod\"\n        }\n    [$__rate_interval])\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total clusters removed",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 2,
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 34
+      },
+      "id": 15,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    rate(\n        envoy_cluster_manager_cluster_updated{\n            namespace=~\"$Namespace\",pod=~\"$pod\"\n        }\n    [$__rate_interval])\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total cluster updates",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 2,
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 42
+      },
+      "id": 16,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    rate(\n        envoy_cluster_manager_cluster_updated_via_merge{\n            namespace=~\"$Namespace\",pod=~\"$pod\"\n        }\n    [$__rate_interval])\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total cluster updates via merge",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 2,
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 42
+      },
+      "id": 17,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    rate(\n        envoy_cluster_manager_update_merge_cancelled{\n            namespace=~\"$Namespace\",pod=~\"$pod\"\n        }\n    [$__rate_interval])\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total merged updates cancelled",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "decimals": 2,
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 42
+      },
+      "id": 18,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table"
+        }
+      },
+      "pluginVersion": "v11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum by (pod) (\n    rate(\n        envoy_cluster_manager_update_out_of_merge_window{\n            namespace=~\"$Namespace\",pod=~\"$pod\"\n        }\n    [$__rate_interval])\n)\n",
+          "intervalFactor": 2,
+          "legendFormat": "{{pod}}\n"
+        }
+      ],
+      "title": "Total updates out of merge window",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 50
+      },
+      "id": 19,
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 20,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Total requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 0,
+              "unit": "short"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 21,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    envoy_cluster_upstream_rq_active{\n        namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n    }\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Active requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 22,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_pending_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Pending total requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 23,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_pending_overflow{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Pending overflow requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 24,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_pending_failure_eject{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Pending failure eject requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 0,
+              "unit": "short"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 25,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    envoy_cluster_upstream_rq_pending_active{\n        namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n    }\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Pending active requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 26,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_cancelled{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Cancelled requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 27,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_maintenance_mode{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Maintenance mode requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 28,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_timeout{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Timeout requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 29,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_max_duration_reached{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Max duration reached requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 30,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_per_try_timeout{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Per try timeout requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 31,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_rx_reset{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "RX reset requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 32,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_tx_reset{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "TX reset requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 33,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_retry{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Retry requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 34,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_retry_backoff_exponential{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Retry backoff exponential",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 35,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_retry_backoff_ratelimited{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Retry backoff ratelimited",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 36,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_retry_limit_exceeded{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Retry limit exceeded",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 37,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_retry_success{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Retry success",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 38,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_rq_retry_overflow{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Retry overflow",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Cluster Stats",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 51
+      },
+      "id": 39,
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 40,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel, response_code_class) (\n    rate(\n        envoy_cluster_upstream_rq{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}} {{response_code_class}}\n"
+            }
+          ],
+          "title": "Upstream Requests by Response Code Class",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 41,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel, response_code) (\n    rate(\n        envoy_cluster_upstream_rq{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}} {{response_code}}\n"
+            }
+          ],
+          "title": "Upstream Requests by Response Code",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 42,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel, response_code) (\n    rate(\n        envoy_cluster_upstream_rq{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\",\n            response_code=~\"5..\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}} {{response_code}}\n"
+            }
+          ],
+          "title": "5xx Errors by Response Code",
+          "type": "timeseries"
+        }
+      ],
+      "title": "HTTP Metrics By Cluster",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 52
+      },
+      "id": 43,
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 44,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Total connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 0,
+              "unit": "short"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 45,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    envoy_cluster_upstream_cx_active{\n        namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n    }\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Active connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 46,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_http1_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "HTTP/1.1 connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 47,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_http2_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "HTTP/2 connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 48,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_http3_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "HTTP/3 connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 49,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_connect_fail{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Connection failures",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 50,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_connect_timeout{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Connection timeouts",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 51,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_connect_with_0_rtt{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "0-RTT connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 52,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_idle_timeout{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Idle timeouts",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 53,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_connect_attempts_exceeded{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Connection attempts exceeded",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 54,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_max_duration_reached{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Max duration reached",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 55,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_destroy{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Destroyed connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 56,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_destroy_local{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Locally destroyed connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 57,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_destroy_remote{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Remotely destroyed connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 58,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_destroy_with_active_rq{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Destroyed with active requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 59,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_destroy_local_with_active_rq{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Locally destroyed with active requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 60,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_destroy_remote_with_active_rq{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Remotely destroyed with active requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 61,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_close_notify{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Close notify",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 62,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_overflow{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Connection overflow",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 63,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_protocol_error{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Protocol errors",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 64,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_max_requests{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Max requests reached",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 65,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_none_healthy{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "No healthy hosts",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 66,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_pool_overflow{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Connection pool overflow",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 67,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_rx_bytes_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Received bytes",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 0,
+              "unit": "short"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 68,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    envoy_cluster_upstream_cx_rx_bytes_buffered{\n        namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n    }\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Received bytes buffered",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 2,
+              "unit": "ops"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 69,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    rate(\n        envoy_cluster_upstream_cx_tx_bytes_total{\n            namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n        }\n    [$__rate_interval])\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Transmitted bytes",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "decimals": 0,
+              "unit": "short"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 70,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "sum by (pod, $clusterNameLabel) (\n    envoy_cluster_upstream_cx_tx_bytes_buffered{\n        namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n    }\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}}\n"
+            }
+          ],
+          "title": "Transmitted bytes buffered",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "bars",
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "unit": "ms"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/mean/i"
+                },
+                "properties": [
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.lineStyle",
+                    "value": {
+                      "dash": [
+                        8,
+                        10
+                      ],
+                      "fill": "dash"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 71,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "histogram_quantile(\n  0.9,\n  sum by (pod, $clusterNameLabel, le) (\n    rate(\n      envoy_cluster_upstream_cx_connect_ms_bucket{\n        namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n      }\n    [$__rate_interval])\n  )\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}} \n"
+            }
+          ],
+          "title": "Connection establishment time (p90)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "bars",
+                "fillOpacity": 10,
+                "showPoints": "never"
+              },
+              "unit": "ms"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/mean/i"
+                },
+                "properties": [
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.lineStyle",
+                    "value": {
+                      "dash": [
+                        8,
+                        10
+                      ],
+                      "fill": "dash"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 72,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table"
+            }
+          },
+          "pluginVersion": "v11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "expr": "histogram_quantile(\n  0.9,\n  sum by (pod, $clusterNameLabel, le) (\n    rate(\n      envoy_cluster_upstream_cx_length_ms_bucket{\n        namespace=~\"$Namespace\",pod=~\"$pod\", $clusterNameLabel=\"$cluster\"\n      }\n    [$__rate_interval])\n  )\n)\n",
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}} {{$clusterNameLabel}} \n"
+            }
+          ],
+          "title": "Connection lifetime (p90)",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Cluster Connection Stats",
+      "type": "row"
+    }
+  ],
+  "schemaVersion": 39,
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "Prometheus"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Data Source",
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "cluster_name",
+          "value": "cluster_name"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "cluster_name",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "clusterNameLabel",
+        "options": [
+          {
+            "selected": true,
+            "text": "cluster_name",
+            "value": "cluster_name"
+          }
+        ],
+        "query": "cluster_name",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "custom"
+      },
+      {
+        "allValue": ".*",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(envoy_cluster_upstream_rq_total,namespace)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Namespace",
+        "options": [],
+        "query": "label_values(envoy_cluster_upstream_rq_total,namespace)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "definition": "query_result(sum({namespace=\"$Namespace\",__name__=\"envoy_server_version\"}) by (pod))",
+        "includeAll": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(sum({namespace=\"$Namespace\",__name__=\"envoy_server_version\"}) by (pod))",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/^{pod=\"([^-\"]+).*$/",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "definition": "query_result(sum({namespace=\"$Namespace\",__name__=\"envoy_server_version\", pod=~\"$app-.*\"}) by (pod))",
+        "includeAll": false,
+        "multi": true,
+        "name": "pod",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(sum({namespace=\"$Namespace\",__name__=\"envoy_server_version\", pod=~\"$app-.*\"}) by (pod))",
+          "refId": "PrometheusVariablePod"
+        },
+        "refresh": 2,
+        "regex": "/pod=\"([^\"]+)\"/",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "query_result(sum({namespace=\"$Namespace\",__name__=\"envoy_cluster_upstream_rq_total\", pod=~\"$app-.*\"}) by ($clusterNameLabel))",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(sum({namespace=\"$Namespace\",__name__=\"envoy_cluster_upstream_rq_total\", pod=~\"$app-.*\"}) by ($clusterNameLabel))",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/^{.*=\"(.*)\"}/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "0.9",
+          "value": "0.9"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "0.9",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "quantiles",
+        "options": [
+          {
+            "selected": true,
+            "text": "0.9",
+            "value": "0.9"
+          }
+        ],
+        "query": "0.9",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "utc",
+  "title": "Istio Envoy Clusters",
+  "uid": "",
+  "version": 0,
+  "gnetId": 23502
+}
