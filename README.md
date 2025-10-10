@@ -1,17 +1,23 @@
-# Vérifie si le draining est configuré
-kubectl -n istio-system get configmap istio -o yaml | grep -A5 "drain"
 
-kubectl -n transit-ist-client get deploy transit-gateway -o yaml | grep terminationGracePeriodSeconds
+kubectl -n istio-system get configmap istio -o yaml > istio-configmap.yaml
+kubectl -n istio-system get telemetry
 
-n
+kubectl -n istio-system get configmap
 
-kubectl -n transit-ist-client get events --sort-by=.lastTimestamp | grep transit-gateway
+kubectl -n istio-system get telemetry telemetry -o yaml > telemetry.yaml
+istioctl proxy-config all <pod_name> -n <namespace> > envoy-config-dump.txt
+Hi Tanuj,
 
-kubectl -n transit-ist-client describe pod <transit-gateway-pod-name> | grep -A10 "State"
+I’ve gathered the requested configurations from the istio-system namespace:
 
-kubectl -n transit-ist-client logs <transit-gateway-pod> -c istio-proxy | grep -E "drain|shutdown|disconnect|removed|termination"
+istio ConfigMap → istio-configmap.yaml
 
-kubectl -n istio-system logs -l app=istiod | grep -E "disconnect|drain|termination|xds"
+Telemetry CR → telemetry.yaml
 
-kubectl -n istio-system logs -l app=istiod | grep -E "disconnect|drain|termination|xds"
+Both files are attached to this ticket for your reference.
 
+If needed, I can also include the Envoy proxy configuration dump from one of the transit-gateway pods to help validate the filterChain behaviour.
+
+Let me know if you’d like me to add that as well.
+
+— Emmanuel
