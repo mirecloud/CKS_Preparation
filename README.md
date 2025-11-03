@@ -1,6 +1,6 @@
 # CKS Preparation – Security Benchmarking Guide
 
-This document provides instructions to perform security benchmarks and assessments for Kubernetes environments, leveraging CIS Benchmarks and kube-bench.
+This document Folllow the path for my cks preparation.
 
 ---
 
