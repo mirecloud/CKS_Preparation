@@ -153,3 +153,6 @@ roleRef:
 Ce guide est évolutif et doit être enrichi à mesure de la progression dans la préparation CKS. Veillez à toujours appliquer les normes de sécurité et à valider vos pratiques selon les benchmarks actuels.
 
 kubectl patch namespace wm-285348-ps3r1 --type='json' -p='[{"op": "remove", "path": "/spec/finalizers"}]'
+kubectl get namespace wm-285348-ps3r1 -o json | \
+  jq '.spec.finalizers=[]' | \
+  kubectl replace --raw "/api/v1/namespaces/wm-285348-ps3r1/finalize" -f -
