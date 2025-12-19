@@ -156,3 +156,11 @@ kubectl patch namespace wm-285348-ps3r1 --type='json' -p='[{"op": "remove", "pat
 kubectl get namespace wm-285348-ps3r1 -o json | \
   jq '.spec.finalizers=[]' | \
   kubectl replace --raw "/api/v1/namespaces/wm-285348-ps3r1/finalize" -f -
+
+  I can’t guarantee there will be zero impact.
+
+The changes made are required to match the supported mks-config schema in the target version, and they don’t remove features intentionally. However, since this is an upgrade and the mesh will be uninstalled, there is always a risk of side effects depending on how ECP consumers are using the mesh and extension providers today.
+
+To minimize risk, a full uninstall + upgrade is the safest and most predictable approach. This ensures TSB re-registers the cluster in a clean RACHM state and avoids config drift from deprecated parameters.
+
+With the current changes, I don’t see an immediate blocker, but I wouldn’t claim zero-risk without a clean reinstall or validation testing.
